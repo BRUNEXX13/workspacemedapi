@@ -36,8 +36,8 @@ public class EspecialidadeResource {
 	}
 
 	// @Salvar uma Uma Especialidade no Banco De Dados - Status Code 201 Created //
-	// Criando Valors através do JSON @Valid Bean Validator 
-	@PostMapping
+	// Criando Valores através do JSON @Valid Bean Validator 
+	@PostMapping                          //@Valid Ativa o  bean Validation
 	public ResponseEntity<Especialidade> criar(@Valid @RequestBody Especialidade especialidade, HttpServletResponse response) {
 		Especialidade especialidadeSalva = especialidadeRepository.save(especialidade);
 

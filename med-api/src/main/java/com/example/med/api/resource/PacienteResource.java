@@ -31,8 +31,13 @@ public class PacienteResource {
 	public List<Paciente> listarPaciente() {
 		return pacienteRepository.findAll();
 	}
+ 
+	
+	// @ CRIAR Uma Especialidade - Status Code 201 Created //
+	// Criando Valors através do JSON @Valid Bean Validator
 
-	@PostMapping
+	
+	@PostMapping                          //@Valid Ativa o  bean Validation
 	public ResponseEntity<Paciente> criar(@Valid @RequestBody Paciente paciente, HttpServletResponse response) {
 		Paciente pacienteSalvo = pacienteRepository.save(paciente);
 

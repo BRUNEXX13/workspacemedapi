@@ -19,7 +19,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 // Classe de Captura de Excecoes
-//Observa toda aplicacao
+//Observa toda aplicacao @ControllerAdvice
 @ControllerAdvice
 public class MedApiExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -37,21 +37,25 @@ public class MedApiExceptionHandler extends ResponseEntityExceptionHandler {
 		return handleExceptionInternal(ex, erros, headers, HttpStatus.BAD_REQUEST, request);
 	}
 
-	// Metodo que aciona o Bean Validator
+	// Quando os Argumentos de um metood nao  e Valido por exemplo Nome Nulo, Descricao NotNULL, Lenght Maior que esperado
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 
+		//Lista de Erros que iram carregar caso Acontenca
 		List<Erro> erros = criarListadeErros(ex.getBindingResult());
 		return handleExceptionInternal(ex, erros, headers, HttpStatus.BAD_REQUEST, request);
+															//BAD_REQUEST, ACCEPT ETC
 	}
 
 	// Lista de Erros Para adicionar o bean Validotr, Nome , Descricao etc
 	private List<Erro> criarListadeErros(BindingResult bindingResult) {
+		
 		List<Erro> erros = new ArrayList<>();
 
-		// Me de todos os Erros que aconteceram na Entidade = .getfieldErros
+		// Retorna todos os Erros que aconteceram na Entidade = .getfieldErros 
 		for (FieldError fieldError : bindingResult.getFieldErrors()) {
+			
 			String mensagemUsuario = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
 			String mensagemDesenvolvedor = fieldError.toString();
 			erros.add(new Erro(mensagemUsuario, mensagemDesenvolvedor));

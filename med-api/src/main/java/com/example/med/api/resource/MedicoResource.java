@@ -19,6 +19,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.example.med.api.model.Medico;
 import com.example.med.api.repository.MedicoRepository;
 
+//Pegando de Repository 
+
+
 @RestController
 @RequestMapping("/medicos")
 public class MedicoResource {
@@ -35,7 +38,7 @@ public class MedicoResource {
 	// @ CRIAR Uma Especialidade - Status Code 201 Created //
 	// Criando Valors através do JSON @Valid Bean Validator
 
-	@PostMapping
+	@PostMapping                        //@Valid Ativa o  bean Validation
 	public ResponseEntity<Medico> criar(@Valid @RequestBody Medico medico, HttpServletResponse response) {
 		Medico medicoSalvo = medicoRepository.save(medico);
 

@@ -1,11 +1,13 @@
 package com.example.med.api.model;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "paciente")
@@ -16,13 +18,22 @@ public class Paciente {
 	private long codigo;
 
 	@NotNull
+	@Size(min=3, max=50)
 	private String nome;
 
 	@NotNull
+	@Size(min=3, max=50)
 	private String cpf;
 
 	@NotNull
+	private Boolean ativo;
+	
+	@NotNull
 	private Integer idade;
+
+	// Pegando da Classe Endereço
+	@Embedded
+	private Endereco endereco;
 
 	public long getCodigo() {
 		return codigo;
@@ -48,6 +59,14 @@ public class Paciente {
 		this.cpf = cpf;
 	}
 
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
+	}
+
 	public Integer getIdade() {
 		return idade;
 	}
@@ -56,38 +75,14 @@ public class Paciente {
 		this.idade = idade;
 	}
 
-	public Paciente(long codigo, String nome, String cpf, Integer idade) {
-		super();
-		this.codigo = codigo;
-		this.nome = nome;
-		this.cpf = cpf;
-		this.idade = idade;
+	public Endereco getEndereco() {
+		return endereco;
 	}
 
-	public Paciente() {
-		super();
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
 	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (int) (codigo ^ (codigo >>> 32));
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Paciente other = (Paciente) obj;
-		if (codigo != other.codigo)
-			return false;
-		return true;
-	}
-
+	
+	
+	
 }
