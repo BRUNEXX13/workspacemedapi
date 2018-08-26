@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,21 +35,22 @@ public class EspecialidadeResource {
 
 	}
 
-	// @ CRIAR Uma Especialidade - Status Code 201 Created //
-	// Criando Valors através do JSON
+	// @Salvar uma Uma Especialidade no Banco De Dados - Status Code 201 Created //
+	// Criando Valors através do JSON @Valid Bean Validator 
 	@PostMapping
-	public ResponseEntity<Especialidade> criar(@RequestBody Especialidade especialidade, HttpServletResponse response) {
+	public ResponseEntity<Especialidade> criar(@Valid @RequestBody Especialidade especialidade, HttpServletResponse response) {
 		Especialidade especialidadeSalva = especialidadeRepository.save(especialidade);
 
-		// Devolvendo o valor criado para o jason
+		// Devolvendo o valor criado para o json
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/[codigo]")
-				.buildAndExpand(especialidadeSalva.getCodigo()).toUri();
+		.buildAndExpand(especialidadeSalva.getCodigo()).toUri();
 		response.setHeader("Location", uri.toASCIIString());
 
 		// Apos ser Criado uma especialidade, recebe o codigo criado //
 		// @ResponseStatus(HttpStatus.CREATED), Retornando os valores da API;
 		return ResponseEntity.created(uri).body(especialidadeSalva);
-
+		// Devolve o valor no Json pro desenvolvedor 
+		
 	}
 
 	// Buscando a Especialidade pelo codigo
@@ -56,10 +58,11 @@ public class EspecialidadeResource {
 	public ResponseEntity<Especialidade> buscarPeloCodigo(@PathVariable Long codigo) {
 		Especialidade especialidade = especialidadeRepository.findOne(codigo);
 		
-		// Caso a Especialidade seja Nula ele retorna uma 404 Error
+	// Caso a Especialidade seja Nula ele retorna uma 404 Error
 		return especialidade != null ? ResponseEntity.ok(especialidade) : ResponseEntity.notFound().build();
 
 	}
+
 
 	// Se meu Json trouxer valores Nulos // 204 Not Content
 	// @GetMapping
@@ -68,5 +71,8 @@ public class EspecialidadeResource {
 	// return !especialidades.isEmpty() ? ResponseEntity.ok(especialidades) :
 	// ResponseEntity.noContent().build();
 	// }
+	
+	
+	
 
 }

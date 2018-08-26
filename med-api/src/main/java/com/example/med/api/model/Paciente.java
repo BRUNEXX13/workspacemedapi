@@ -8,8 +8,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "especialidade")
-public class Especialidade {
+@Table(name = "paciente")
+public class Paciente {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +17,12 @@ public class Especialidade {
 
 	@NotNull
 	private String nome;
+
+	@NotNull
+	private String cpf;
+
+	@NotNull
+	private Integer idade;
 
 	public long getCodigo() {
 		return codigo;
@@ -34,10 +40,32 @@ public class Especialidade {
 		this.nome = nome;
 	}
 
-	public Especialidade(long codigo, String nome) {
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+	public Integer getIdade() {
+		return idade;
+	}
+
+	public void setIdade(Integer idade) {
+		this.idade = idade;
+	}
+
+	public Paciente(long codigo, String nome, String cpf, Integer idade) {
 		super();
 		this.codigo = codigo;
 		this.nome = nome;
+		this.cpf = cpf;
+		this.idade = idade;
+	}
+
+	public Paciente() {
+		super();
 	}
 
 	@Override
@@ -56,14 +84,10 @@ public class Especialidade {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Especialidade other = (Especialidade) obj;
+		Paciente other = (Paciente) obj;
 		if (codigo != other.codigo)
 			return false;
 		return true;
-	}
-	
-
-	public Especialidade(){
 	}
 
 }

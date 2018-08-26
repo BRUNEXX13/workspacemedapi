@@ -24,6 +24,7 @@
 		<java.version>1.8</java.version>
 	</properties>
 
+		<!--  HIBERNATE VALIDOR & BEAN VALIDATOR  -->
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
