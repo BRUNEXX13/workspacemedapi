@@ -19,62 +19,59 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.med.api.event.RecursoCriadoEvent;
-import com.example.med.api.model.Medico;
-import com.example.med.api.repository.MedicoRepository;
+import com.example.med.api.model.Exame;
+import com.example.med.api.repository.ExameRepository;
 
 //Pegando de Repository 
 
 @RestController
-@RequestMapping("/medicos")
-public class MedicoResource {
+@RequestMapping("/exames")
+public class ExameResource {
 
 	@Autowired
-	MedicoRepository medicoRepository;
+	private ExameRepository exameRepository;
 
 	// Publicador de Eventos de Aplications , = RecursoCriadoEvent
 	@Autowired
 	private ApplicationEventPublisher publisher;
 
-	// Listando By Json
+	// Listando os valores do JSON
 	@GetMapping
-	public List<Medico> listarMedico() {
-		return medicoRepository.findAll();
+	public List<Exame> listar() {
+		return exameRepository.findAll();
+
 	}
 
-	// @ CRIAR Uma Especialidade - Status Code 201 Created //
-	// Criando Valors através do JSON @Valid Bean Validator
-
+	// @Salvar uma Uma Especialidade no Banco De Dados - Status Code 201
+	// Created//
+	// Criando Valores através do JSON @Valid Bean Validator
 	@PostMapping // @Valid Ativa o bean Validation
-	public ResponseEntity<Medico> criar(@Valid @RequestBody Medico medico, HttpServletResponse response) {
-		Medico medicoSalvo = medicoRepository.save(medico);
+	public ResponseEntity<Exame> criar(@Valid @RequestBody Exame exame, HttpServletResponse response) {
+		Exame exameSalvo = exameRepository.save(exame);
 
 		// Classe Recurso Criado Event
-		publisher.publishEvent(new RecursoCriadoEvent(this, response, medicoSalvo.getCodigo()));
+		publisher.publishEvent(new RecursoCriadoEvent(this, response, exameSalvo.getCodigo()));
 
-		// Apos ser Criado um médico, recebe o codigo criado //
-		// @ResponseStatus(HttpStatus.CREATED), Retornando os valores da API;
-		// Classe Recurso Criado Event
-		publisher.publishEvent(new RecursoCriadoEvent(this, response, medicoSalvo.getCodigo()));
-
-		return ResponseEntity.status(HttpStatus.CREATED).body(medicoSalvo);
+		return ResponseEntity.status(HttpStatus.CREATED).body(exameSalvo);
 
 	}
 
-	// Buscando a Medico pelo codigo
+	// Buscando a Especialidade pelo codigo
 	@GetMapping("/{codigo}")
-	public ResponseEntity<Medico> buscarPeloCodigo(@PathVariable Long codigo) {
-		Medico medico = medicoRepository.findOne(codigo);
+	public ResponseEntity<Exame> buscarPeloCodigo(@PathVariable Long codigo) {
+		Exame exame = exameRepository.findOne(codigo);
 
 		// Caso a Especialidade seja Nula ele retorna uma 404 Error
-		return medico != null ? ResponseEntity.ok(medico) : ResponseEntity.notFound().build();
+		return exame != null ? ResponseEntity.ok(exame) : ResponseEntity.notFound().build();
 
 	}
 
-	// Remover Um Medico
+	// Remover Especialdiade
 	@DeleteMapping("/{codigo}")
 	@ResponseStatus(HttpStatus.NO_CONTENT) // 204 - Codigo No Content
 	public void remover(@PathVariable Long codigo) {
-		medicoRepository.delete(codigo);
+		exameRepository.delete(codigo);
+
 	}
 
 }
