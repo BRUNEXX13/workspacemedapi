@@ -16,4 +16,17 @@ CREATE TABLE paciente (
 
 
 INSERT INTO paciente 
-(nome, cpf, idade, logradouro, numero, complemento, bairro, cep, cidade, estado, ativo) values ('João Silva', '36964400869', 18, 'Rua do Abacaxi', '10', 'Vila Orqq', 'Brasil', '38.400-12', 'Uberlândia', 'MG', true);
+(nome, cpf, idade, logradouro, numero, complemento, bairro, cep, cidade, estado, ativo) values 
+('João Silva', '36964400869', 18, 'Rua do Abacaxi', '10', 'Vila Orqq', 'Brasil', '38.400-12', 'Uberlândia', 'MG', true);
+
+
+
+INSERT INTO paciente 
+(nome, cpf, idade, logradouro, numero, complemento, bairro, cep, cidade, estado, ativo) values 
+('Bruno Silva', '36964400869', 18, 'Rua do Abacaxi', '10', 'Vila Orqq', 'Brasil', '38.400-12', 'Uberlândia', 'MG', true);
+
+
+INSERT INTO paciente 
+(nome, cpf, idade, logradouro, numero, complemento, bairro, cep, cidade, estado, ativo) values 
+('Luana Silva', '36964400869', 18, 'Rua do Abacaxi', '10', 'Vila Orqq', 'Brasil', '38.400-12', 'Uberlândia', 'MG', true);
+

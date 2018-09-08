@@ -2,10 +2,15 @@ package com.example.med.api.model;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -22,9 +27,19 @@ public class Exame {
 	@Size(min = 3, max = 50)
 	private String nome;
 
-	@NotNull
-	@Size(min = 3, max = 50)
-	private String tipo;
+	@Column(name = "data_exame")
+	private LocalDate dataExame;
+
+	@Enumerated(EnumType.STRING)
+	private TipoExame tipo;
+
+	@ManyToOne
+	@JoinColumn(name = "codigo_especialidade")
+	private Especialidade especialidade;
+
+	@ManyToOne
+	@JoinColumn(name = "codigo_paciente")
+	private Paciente paciente;
 
 	public long getCodigo() {
 		return codigo;
@@ -42,19 +57,47 @@ public class Exame {
 		this.nome = nome;
 	}
 
-	public String getTipo() {
+	public LocalDate getDataExame() {
+		return dataExame;
+	}
+
+	public void setDataExame(LocalDate dataExame) {
+		this.dataExame = dataExame;
+	}
+
+	public TipoExame getTipo() {
 		return tipo;
 	}
 
-	public void setTipo(String tipo) {
+	public void setTipo(TipoExame tipo) {
 		this.tipo = tipo;
 	}
 
-	public Exame(long codigo, String nome, String tipo) {
+	public Especialidade getEspecialidade() {
+		return especialidade;
+	}
+
+	public void setEspecialidade(Especialidade especialidade) {
+		this.especialidade = especialidade;
+	}
+
+	public Paciente getPaciente() {
+		return paciente;
+	}
+
+	public void setPaciente(Paciente paciente) {
+		this.paciente = paciente;
+	}
+
+	public Exame(long codigo, String nome, LocalDate dataExame, TipoExame tipo, Especialidade especialidade,
+			Paciente paciente) {
 		super();
 		this.codigo = codigo;
 		this.nome = nome;
+		this.dataExame = dataExame;
 		this.tipo = tipo;
+		this.especialidade = especialidade;
+		this.paciente = paciente;
 	}
 
 	public Exame() {
