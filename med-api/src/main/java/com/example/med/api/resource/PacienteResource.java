@@ -75,4 +75,14 @@ public class PacienteResource {
 		return ResponseEntity.ok(pacienteSalvo);
 	}
 
+	//Atualizacao Parcial de Paciente
+	@PutMapping("/{codigo}/ativo")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void atualizarPropriedadeAtivo(@PathVariable Long codigo,  @RequestBody Boolean ativo){
+		pacienteService.atualizarPropriedadeAtivo(codigo,ativo);
+		
+		
+	}
+	
+	
 }

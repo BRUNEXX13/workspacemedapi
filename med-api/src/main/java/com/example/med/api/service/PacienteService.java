@@ -16,13 +16,25 @@ public class PacienteService {
 	private PacienteRepository pacienteRepository;
 
 	public Paciente atualizar(Long codigo, Paciente paciente) {
+		Paciente pacienteSalvo = buscarPessoaPeloCodigo(codigo);
+
+		BeanUtils.copyProperties(paciente, pacienteSalvo, "codigo");
+		return pacienteRepository.save(pacienteSalvo);
+	}
+
+	public void atualizarPropriedadeAtivo(Long codigo, Boolean ativo) {
+		Paciente pacienteSalvo = buscarPessoaPeloCodigo(codigo);
+		pacienteSalvo.setAtivo(ativo);
+		pacienteRepository.save(pacienteSalvo);
+
+	}
+
+	protected Paciente buscarPessoaPeloCodigo(Long codigo) {
 		Paciente pacienteSalvo = pacienteRepository.findOne(codigo);
 		if (pacienteSalvo == null) {
 			throw new EmptyResultDataAccessException(1);
 		}
-
-		BeanUtils.copyProperties(paciente, pacienteSalvo, "codigo");
-		return pacienteRepository.save(pacienteSalvo);
+		return pacienteSalvo;
 	}
 
 }

@@ -71,9 +71,10 @@ public class UsuarioResource {
 }
 
 	@PutMapping("/{codigo}")
-	public ResponseEntity<Usuario> atualizar(@PathVariable Long codigo, @Valid @RequestBody Usuario usuario) {
+	public ResponseEntity<Usuario> atualizar(@PathVariable Long codigo, @Valid @RequestBody(required = true) Usuario usuario) {
 		Usuario usarioSalvo = usuarioService.atualizar(codigo, usuario);
 		return ResponseEntity.ok(usarioSalvo);
 	}
-
+	
+	
 }
