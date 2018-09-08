@@ -1,9 +1,7 @@
 package com.example.med.api.model;
 
 import java.time.LocalDate;
-import java.util.Calendar;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,7 +16,7 @@ public class Exame {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long codigo;
+	private long codigo;
 
 	@NotNull
 	@Size(min = 3, max = 50)
@@ -26,15 +24,13 @@ public class Exame {
 
 	@NotNull
 	@Size(min = 3, max = 50)
-	private String tipoExame;
+	private String tipo;
 
-	private LocalDate data;
-
-	public Long getCodigo() {
+	public long getCodigo() {
 		return codigo;
 	}
 
-	public void setCodigo(Long codigo) {
+	public void setCodigo(long codigo) {
 		this.codigo = codigo;
 	}
 
@@ -46,28 +42,19 @@ public class Exame {
 		this.nome = nome;
 	}
 
-	public String getTipoExame() {
-		return tipoExame;
+	public String getTipo() {
+		return tipo;
 	}
 
-	public void setTipoExame(String tipoExame) {
-		this.tipoExame = tipoExame;
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 
-	public LocalDate getData() {
-		return data;
-	}
-
-	public void setData(LocalDate data) {
-		this.data = data;
-	}
-
-	public Exame(Long codigo, String nome, String tipoExame, LocalDate data) {
+	public Exame(long codigo, String nome, String tipo) {
 		super();
 		this.codigo = codigo;
 		this.nome = nome;
-		this.tipoExame = tipoExame;
-		this.data = data;
+		this.tipo = tipo;
 	}
 
 	public Exame() {
@@ -78,7 +65,7 @@ public class Exame {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
+		result = prime * result + (int) (codigo ^ (codigo >>> 32));
 		return result;
 	}
 
@@ -91,10 +78,7 @@ public class Exame {
 		if (getClass() != obj.getClass())
 			return false;
 		Exame other = (Exame) obj;
-		if (codigo == null) {
-			if (other.codigo != null)
-				return false;
-		} else if (!codigo.equals(other.codigo))
+		if (codigo != other.codigo)
 			return false;
 		return true;
 	}

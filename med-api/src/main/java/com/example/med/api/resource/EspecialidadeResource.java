@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.med.api.event.RecursoCriadoEvent;
 import com.example.med.api.model.Especialidade;
 import com.example.med.api.repository.EspecialidadeRepository;
-import com.example.med.api.repository.PacienteRepository;
+import com.example.med.api.service.EspecialidadeService;
 
 //Pegando de Repository 
 
@@ -31,6 +32,9 @@ public class EspecialidadeResource {
 
 	@Autowired
 	private EspecialidadeRepository especialidadeRepository;
+	
+	@Autowired
+	private EspecialidadeService especialidadeService;
 
 	// Publicador de Eventos de Aplications , = RecursoCriadoEvent
 	@Autowired
@@ -46,34 +50,31 @@ public class EspecialidadeResource {
 	// @Salvar uma Uma Especialidade no Banco De Dados - Status Code 201
 	// Created//
 	// Criando Valores através do JSON @Valid Bean Validator
-	@PostMapping // @Valid Ativa o bean Validation
-	public ResponseEntity<Especialidade> criar(@Valid @RequestBody Especialidade especialidade,
-			HttpServletResponse response) {
-		Especialidade especialidadeSalva = especialidadeRepository.save(especialidade);
-
-		// Classe Recurso Criado Event
-		publisher.publishEvent(new RecursoCriadoEvent(this, response, especialidadeSalva.getCodigo()));
-
-		return ResponseEntity.status(HttpStatus.CREATED).body(especialidadeSalva);
-
+	@PostMapping
+	public ResponseEntity<Especialidade> criar(@Valid @RequestBody Especialidade especialidade, HttpServletResponse response) {
+		Especialidade especialidadeSalvo = especialidadeRepository.save(especialidade);
+		publisher.publishEvent(new RecursoCriadoEvent(this, response, especialidadeSalvo.getCodigo()));
+		return ResponseEntity.status(HttpStatus.CREATED).body(especialidadeSalvo);
 	}
 
-	// Buscando a Especialidade pelo codigo
+
+
 	@GetMapping("/{codigo}")
 	public ResponseEntity<Especialidade> buscarPeloCodigo(@PathVariable Long codigo) {
-		Especialidade especialidade = especialidadeRepository.findOne(codigo);
-
-		// Caso a Especialidade seja Nula ele retorna uma 404 Error
+	Especialidade especialidade = especialidadeRepository.findOne(codigo);
 		return especialidade != null ? ResponseEntity.ok(especialidade) : ResponseEntity.notFound().build();
+}
 
-	}
-
-	// Remover Especialdiade
 	@DeleteMapping("/{codigo}")
-	@ResponseStatus(HttpStatus.NO_CONTENT) // 204 - Codigo No Content
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long codigo) {
 		especialidadeRepository.delete(codigo);
+}
 
+	@PutMapping("/{codigo}")
+	public ResponseEntity<Especialidade> atualizar(@PathVariable Long codigo, @Valid @RequestBody Especialidade especialidade) {
+		Especialidade especialidadeSalvo = especialidadeService.atualizar(codigo, especialidade);
+		return ResponseEntity.ok(especialidadeSalvo);
 	}
 
 }
