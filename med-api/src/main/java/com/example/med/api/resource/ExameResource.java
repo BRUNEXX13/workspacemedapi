@@ -1,5 +1,6 @@
 package com.example.med.api.resource;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -7,9 +8,12 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,9 +24,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.med.api.event.RecursoCriadoEvent;
+import com.example.med.api.exceptionhandler.MedApiExceptionHandler.Erro;
 import com.example.med.api.model.Exame;
 import com.example.med.api.repository.ExameRepository;
+import com.example.med.api.repository.filter.ExameFilter;
 import com.example.med.api.service.ExameService;
+import com.example.med.api.service.exception.PacienteInexistenteOuInativaException;
 
 @RestController
 @RequestMapping("/exames")
@@ -32,14 +39,17 @@ public class ExameResource {
 	private ExameRepository exameRepository;
 
 	@Autowired
+	private MessageSource messageSource;
+	
+	@Autowired
 	private ExameService exameService;
 
 	@Autowired
 	private ApplicationEventPublisher publisher;
 
 	@GetMapping
-	public List<Exame> listar() {
-		return exameRepository.findAll();
+	public List<Exame> pesquisar(ExameFilter exameFilter) {
+		return exameRepository.filtrar(exameFilter);
 
 	}
 
@@ -52,6 +62,8 @@ public class ExameResource {
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, exameSalvo.getCodigo()));
 		return ResponseEntity.status(HttpStatus.CREATED).body(exameSalvo);
 	}
+	
+
 
 	@GetMapping("/{codigo}")
 	public ResponseEntity<Exame> buscarPeloCodigo(@PathVariable Long codigo) {
@@ -71,4 +83,15 @@ public class ExameResource {
 		return ResponseEntity.ok(exameSalvo);
 	}
 
+	
+	// Passando uma Excecao Especifica // Naoo pode salvar um exame com papciente inativo
+	@ExceptionHandler({ PacienteInexistenteOuInativaException.class })
+	public ResponseEntity<Object> handlePessoaInexistenteOuInativaException(PacienteInexistenteOuInativaException ex) {
+		String mensagemUsuario = messageSource.getMessage("paciente.inexistente-ou-inativa", null, LocaleContextHolder.getLocale());
+		String mensagemDesenvolvedor = ex.toString();
+		List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
+		return ResponseEntity.badRequest().body(erros);
+	}
+	
+	
 }

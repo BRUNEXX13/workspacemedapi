@@ -29,7 +29,7 @@ public class PacienteService {
 
 	}
 
-	protected Paciente buscarPessoaPeloCodigo(Long codigo) {
+	public Paciente buscarPessoaPeloCodigo(Long codigo) {
 		Paciente pacienteSalvo = pacienteRepository.findOne(codigo);
 		if (pacienteSalvo == null) {
 			throw new EmptyResultDataAccessException(1);

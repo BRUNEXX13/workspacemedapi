@@ -12,5 +12,14 @@ CREATE TABLE exame (
 )ENGINE=INNODB DEFAULT CHARSET=utf8;
 
 INSERT INTO exame (nome, tipo, data_exame, observacao, codigo_especialidade, codigo_paciente) 
-VALUES ('Exame 1', 'RAIOX', '2017-06-10', 'Exame Feito com sucesso', 1, 1)
+VALUES ('Exame 1', 'RAIOX', '2017-06-10', 'Exame Feito com sucesso', 1, 1);
 
+INSERT INTO exame (nome, tipo, data_exame, observacao, codigo_especialidade, codigo_paciente) 
+VALUES ('Exame 1', 'RAIOX', '2016-01-01', 'Exame Feito com sucesso', 1, 1);
+
+
+INSERT INTO exame (nome, tipo, data_exame, observacao, codigo_especialidade, codigo_paciente) 
+VALUES ('Exame 1', 'RAIOX', '2015-01-01', 'Exame Feito com sucesso', 1, 1);
+
+INSERT INTO exame (nome, tipo, data_exame, observacao, codigo_especialidade, codigo_paciente) 
+VALUES ('Emergencia', 'RAIOX', '2018-10-18', 'Exame Feito com sucesso', 2, 2);

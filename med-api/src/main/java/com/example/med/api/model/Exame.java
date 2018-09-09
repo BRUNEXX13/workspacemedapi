@@ -27,17 +27,21 @@ public class Exame {
 	@Size(min = 3, max = 50)
 	private String nome;
 
+	@NotNull
 	@Column(name = "data_exame")
 	private LocalDate dataExame;
 
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private TipoExame tipo;
 
 	@ManyToOne
+	@NotNull
 	@JoinColumn(name = "codigo_especialidade")
 	private Especialidade especialidade;
 
 	@ManyToOne
+	@NotNull
 	@JoinColumn(name = "codigo_paciente")
 	private Paciente paciente;
 
