@@ -23,3 +23,12 @@ VALUES ('Exame 1', 'RAIOX', '2015-01-01', 'Exame Feito com sucesso', 1, 1);
 
 INSERT INTO exame (nome, tipo, data_exame, observacao, codigo_especialidade, codigo_paciente) 
 VALUES ('Emergencia', 'RAIOX', '2018-10-18', 'Exame Feito com sucesso', 2, 2);
+
+INSERT INTO exame (nome, tipo, data_exame, observacao, codigo_especialidade, codigo_paciente) 
+VALUES ('Exam4', 'RAIOX', '2018-10-18', 'Exame Feito com sucesso', 2, 2);
+
+INSERT INTO exame (nome, tipo, data_exame, observacao, codigo_especialidade, codigo_paciente) 
+VALUES ('Exam5', 'RAIOX', '2018-10-18', 'Exame Feito com sucesso', 2, 2);
+
+INSERT INTO exame (nome, tipo, data_exame, observacao, codigo_especialidade, codigo_paciente) 
+VALUES ('Exam6', 'RAIOX', '2018-10-18', 'Exame Feito com sucesso', 3, 3);
