@@ -52,7 +52,7 @@ public class RefreshTokenPostProcessor implements ResponseBodyAdvice<OAuth2Acces
 		refreshTokenCookie.setHttpOnly(true);
 		refreshTokenCookie.setSecure(false); 
 		
-		// TODO: Mudar para true em // producao 
+		// TODO: Mudar para true em // producao //
 		
 		refreshTokenCookie.setPath(req.getContextPath() + "/oauth/token");
 		
