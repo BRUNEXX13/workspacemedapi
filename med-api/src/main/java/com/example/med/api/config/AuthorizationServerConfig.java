@@ -27,14 +27,26 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		.secret("@ngul@r0")
 		.scopes("read", "write")
 		.authorizedGrantTypes("password" , "refresh_token")
-		.accessTokenValiditySeconds(20)
-		.refreshTokenValiditySeconds(3600*24);
+		//Validade do Toekn  seg
+		.accessTokenValiditySeconds(1800)
+		//Expira em 24 horas o token
+		.refreshTokenValiditySeconds(3600*24)
+		.and()
+		//Scopos para Usuario Mobile
+		.withClient("mobile")
+		.secret("m0b1l30")
+		.scopes("read")
+		.authorizedGrantTypes("password", "refresh_token")
+		.accessTokenValiditySeconds(1800)
+		.refreshTokenValiditySeconds(3600 * 24);
 	}
 
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 		endpoints
 		.tokenStore(tokenStore())
+		//Se o Usuario usar aplicacao todo dia ele nao re-usa o refresh token 
+		
 		.reuseRefreshTokens(false)
 		.authenticationManager(authenticationManager);
 	}

@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,15 +51,25 @@ public class ExameResource {
 	private ApplicationEventPublisher publisher;
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_EXAME') and #oauth2.hasScope('read')")
 	public Page<Exame> pesquisar(ExameFilter exameFilter, Pageable pageable) {
 		return exameRepository.filtrar(exameFilter, pageable);
 
 	}
+	
+	@GetMapping("/{codigo}")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_EXAME') and #oauth2.hasScope('read')")
+	public ResponseEntity<Exame> buscarPeloCodigo(@PathVariable Long codigo) {
+		Exame exame = exameRepository.findOne(codigo);
+		return exame != null ? ResponseEntity.ok(exame) : ResponseEntity.notFound().build();
+	}
+	
 
 	// @Salvar uma Uma Especialidade no Banco De Dados - Status Code 201
 	// Created//
 	// Criando Valores através do JSON @Valid Bean Validator
 	@PostMapping
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_EXAME') and #oauth2.hasScope('write')")
 	public ResponseEntity<Exame> criar(@Valid @RequestBody Exame exame, HttpServletResponse response) {
 		Exame exameSalvo = exameRepository.save(exame);
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, exameSalvo.getCodigo()));
@@ -67,19 +78,17 @@ public class ExameResource {
 	
 
 
-	@GetMapping("/{codigo}")
-	public ResponseEntity<Exame> buscarPeloCodigo(@PathVariable Long codigo) {
-		Exame exame = exameRepository.findOne(codigo);
-		return exame != null ? ResponseEntity.ok(exame) : ResponseEntity.notFound().build();
-	}
+	
 
 	@DeleteMapping("/{codigo}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PreAuthorize("hasAuthority('ROLE_REMOVER_EXAME') and #oauth2.hasScope('write')")
 	public void remover(@PathVariable Long codigo) {
 		exameRepository.delete(codigo);
 	}
 
 	@PutMapping("/{codigo}")
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_EXAME') and #oauth2.hasScope('write')")
 	public ResponseEntity<Exame> atualizar(@PathVariable Long codigo, @Valid @RequestBody Exame exame) {
 		Exame exameSalvo = exameService.atualizar(codigo, exame);
 		return ResponseEntity.ok(exameSalvo);

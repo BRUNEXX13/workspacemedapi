@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,6 +43,7 @@ public class EspecialidadeResource {
 
 	// Listando os valores do JSON
 	@GetMapping
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_ESPECIALIDADE') and #oauth2.hasScope('read')")
 	public List<Especialidade> listar() {
 		return especialidadeRepository.findAll();
 
@@ -51,6 +53,7 @@ public class EspecialidadeResource {
 	// Created//
 	// Criando Valores através do JSON @Valid Bean Validator
 	@PostMapping
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_ESPECIALIDADE') and #oauth2.hasScope('write')")
 	public ResponseEntity<Especialidade> criar(@Valid @RequestBody Especialidade especialidade, HttpServletResponse response) {
 		Especialidade especialidadeSalvo = especialidadeRepository.save(especialidade);
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, especialidadeSalvo.getCodigo()));
@@ -60,6 +63,7 @@ public class EspecialidadeResource {
 
 
 	@GetMapping("/{codigo}")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_ESPECIALIDADE') and #oauth2.hasScope('read')")
 	public ResponseEntity<Especialidade> buscarPeloCodigo(@PathVariable Long codigo) {
 	Especialidade especialidade = especialidadeRepository.findOne(codigo);
 		return especialidade != null ? ResponseEntity.ok(especialidade) : ResponseEntity.notFound().build();

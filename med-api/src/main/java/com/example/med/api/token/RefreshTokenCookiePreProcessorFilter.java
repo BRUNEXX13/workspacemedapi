@@ -18,8 +18,8 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-
 // Classe Para mover o Cookie - Token para Requisicao 
+//Processador depois que o Refreh Token e criado
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class RefreshTokenCookiePreProcessorFilter implements Filter {
@@ -27,12 +27,11 @@ public class RefreshTokenCookiePreProcessorFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		
+
 		HttpServletRequest req = (HttpServletRequest) request;
-		
-		if ("/oauth/token".equalsIgnoreCase(req.getRequestURI()) 
-				&& "refresh_token".equals(req.getParameter("grant_type"))
-				&& req.getCookies() != null) {
+
+		if ("/oauth/token".equalsIgnoreCase(req.getRequestURI())
+				&& "refresh_token".equals(req.getParameter("grant_type")) && req.getCookies() != null) {
 			for (Cookie cookie : req.getCookies()) {
 				if (cookie.getName().equals("refreshToken")) {
 					String refreshToken = cookie.getValue();
@@ -40,29 +39,29 @@ public class RefreshTokenCookiePreProcessorFilter implements Filter {
 				}
 			}
 		}
-		
+
 		chain.doFilter(req, response);
 	}
-	
+
 	@Override
 	public void destroy() {
-		
+
 	}
 
 	@Override
 	public void init(FilterConfig arg0) throws ServletException {
-		
+
 	}
-	
+
 	static class MyServletRequestWrapper extends HttpServletRequestWrapper {
 
 		private String refreshToken;
-		
+
 		public MyServletRequestWrapper(HttpServletRequest request, String refreshToken) {
 			super(request);
 			this.refreshToken = refreshToken;
 		}
-		
+
 		@Override
 		public Map<String, String[]> getParameterMap() {
 			ParameterMap<String, String[]> map = new ParameterMap<>(getRequest().getParameterMap());
@@ -70,7 +69,7 @@ public class RefreshTokenCookiePreProcessorFilter implements Filter {
 			map.setLocked(true);
 			return map;
 		}
-		
+
 	}
 
 }

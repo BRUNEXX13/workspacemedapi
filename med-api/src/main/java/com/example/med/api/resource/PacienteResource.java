@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +31,7 @@ public class PacienteResource {
 
 	@Autowired
 	private PacienteRepository PacienteRepository;
-	
+
 	@Autowired
 	private PacienteService pacienteService;
 
@@ -49,40 +50,41 @@ public class PacienteResource {
 	// Created//
 	// Criando Valores através do JSON @Valid Bean Validator
 	@PostMapping
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_PACIENTE') and #oauth2.hasScope('write')")
 	public ResponseEntity<Paciente> criar(@Valid @RequestBody Paciente paciente, HttpServletResponse response) {
 		Paciente pacienteSalvo = PacienteRepository.save(paciente);
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, pacienteSalvo.getCodigo()));
 		return ResponseEntity.status(HttpStatus.CREATED).body(pacienteSalvo);
 	}
 
-
-
 	@GetMapping("/{codigo}")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_PACIENTE') and #oauth2.hasScope('read')")
 	public ResponseEntity<Paciente> buscarPeloCodigo(@PathVariable Long codigo) {
 		Paciente paciente = PacienteRepository.findOne(codigo);
 		return paciente != null ? ResponseEntity.ok(paciente) : ResponseEntity.notFound().build();
-}
+	}
 
 	@DeleteMapping("/{codigo}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PreAuthorize("hasAuthority('ROLE_REMOVER_PACIENTE') and #oauth2.hasScope('write')")
 	public void remover(@PathVariable Long codigo) {
 		PacienteRepository.delete(codigo);
-}
+	}
 
 	@PutMapping("/{codigo}")
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_PACIENTE') and #oauth2.hasScope('write')")
 	public ResponseEntity<Paciente> atualizar(@PathVariable Long codigo, @Valid @RequestBody Paciente paciente) {
 		Paciente pacienteSalvo = pacienteService.atualizar(codigo, paciente);
 		return ResponseEntity.ok(pacienteSalvo);
 	}
 
-	//Atualizacao Parcial de Paciente
+	// Atualizacao Parcial de Paciente
 	@PutMapping("/{codigo}/ativo")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void atualizarPropriedadeAtivo(@PathVariable Long codigo,  @RequestBody Boolean ativo){
-		pacienteService.atualizarPropriedadeAtivo(codigo,ativo);
-		
-		
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_PACIENTE') and #oauth2.hasScope('write')")
+	public void atualizarPropriedadeAtivo(@PathVariable Long codigo, @RequestBody Boolean ativo) {
+		pacienteService.atualizarPropriedadeAtivo(codigo, ativo);
+
 	}
-	
-	
+
 }
