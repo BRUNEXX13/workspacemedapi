@@ -1,1 +1,1 @@
-java -Dserver.port=$PORT -Dspring.profiles.active=prod $JAVA_OPTS ar target/medapi*.jar
+web: java -Dserver.port=$PORT -Dspring.profiles.active=prod $JAVA_OPTS ar target/medapi*.jar
