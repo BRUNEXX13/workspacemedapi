@@ -16,9 +16,15 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 
+import com.example.med.api.model.Especialidade;
+import com.example.med.api.model.Especialidade_;
 import com.example.med.api.model.Exame;
 import com.example.med.api.model.Exame_;
+import com.example.med.api.model.Paciente;
+import com.example.med.api.model.Paciente_;
+import com.example.med.api.model.TipoExame;
 import com.example.med.api.repository.filter.ExameFilter;
+import com.example.med.api.repository.projection.ResumoExame;
 
 public class ExameRepositoryImpl implements ExameRepositoryQuery {
 
@@ -59,7 +65,7 @@ public class ExameRepositoryImpl implements ExameRepositoryQuery {
 		return predicates.toArray(new Predicate[predicates.size()]);
 	}
 
-	private void adicionarRestricoesDePaginacao(TypedQuery<Exame> query, Pageable pageable) {
+	private void adicionarRestricoesDePaginacao(TypedQuery<?> query, Pageable pageable) {
 		int paginaAtual = pageable.getPageNumber();
 		int totalRegistrosPorPagina = pageable.getPageSize();
 		int primeiroRegistroDaPagina = paginaAtual * totalRegistrosPorPagina;
@@ -79,6 +85,28 @@ public class ExameRepositoryImpl implements ExameRepositoryQuery {
 		criteria.select(builder.count(root));
 		return manager.createQuery(criteria).getSingleResult();
 	}
+
+	@Override
+	public Page<ResumoExame> resumir(ExameFilter exameFilter, Pageable pageable) {
+		CriteriaBuilder builder = manager.getCriteriaBuilder();
+		CriteriaQuery<ResumoExame> criteria = builder.createQuery(ResumoExame.class);
+		Root<Exame> root = criteria.from(Exame.class);
+		
+		criteria.select(builder.construct(ResumoExame.class
+				,root.get(Exame_.codigo)
+				,root.get(Exame_.nome)
+				,root.get(Exame_.dataExame)
+				,root.get(Exame_.tipo)
+				,root.get(Exame_.especialidade).get(Especialidade_.nome)
+				,root.get(Exame_.paciente).get(Paciente_.nome)));
+		
 	
+		Predicate[] predicates = criarRestricoes(exameFilter, builder, root);
+		criteria.where(predicates);
+		
+		TypedQuery<ResumoExame> query = manager.createQuery(criteria);
+		adicionarRestricoesDePaginacao(query, pageable);
+		
+		return new PageImpl<>(query.getResultList(), pageable, total(exameFilter));
+	}
 }
-	

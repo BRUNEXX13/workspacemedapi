@@ -31,6 +31,7 @@ import com.example.med.api.exceptionhandler.MedApiExceptionHandler.Erro;
 import com.example.med.api.model.Exame;
 import com.example.med.api.repository.ExameRepository;
 import com.example.med.api.repository.filter.ExameFilter;
+import com.example.med.api.repository.projection.ResumoExame;
 import com.example.med.api.service.ExameService;
 import com.example.med.api.service.exception.PacienteInexistenteOuInativaException;
 
@@ -43,7 +44,7 @@ public class ExameResource {
 
 	@Autowired
 	private MessageSource messageSource;
-	
+
 	@Autowired
 	private ExameService exameService;
 
@@ -56,14 +57,20 @@ public class ExameResource {
 		return exameRepository.filtrar(exameFilter, pageable);
 
 	}
-	
+
+	@GetMapping(params = "resumo")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_EXAME') and #oauth2.hasScope('read')")
+	public Page<ResumoExame> resumir(ExameFilter exameFilter, Pageable pageable) {
+		return exameRepository.resumir(exameFilter, pageable);
+
+	}
+
 	@GetMapping("/{codigo}")
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_EXAME') and #oauth2.hasScope('read')")
 	public ResponseEntity<Exame> buscarPeloCodigo(@PathVariable Long codigo) {
 		Exame exame = exameRepository.findOne(codigo);
 		return exame != null ? ResponseEntity.ok(exame) : ResponseEntity.notFound().build();
 	}
-	
 
 	// @Salvar uma Uma Especialidade no Banco De Dados - Status Code 201
 	// Created//
@@ -75,10 +82,6 @@ public class ExameResource {
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, exameSalvo.getCodigo()));
 		return ResponseEntity.status(HttpStatus.CREATED).body(exameSalvo);
 	}
-	
-
-
-	
 
 	@DeleteMapping("/{codigo}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
@@ -94,15 +97,15 @@ public class ExameResource {
 		return ResponseEntity.ok(exameSalvo);
 	}
 
-	
-	// Passando uma Excecao Especifica // Naoo pode salvar um exame com papciente inativo
+	// Passando uma Excecao Especifica // Naoo pode salvar um exame com
+	// papciente inativo
 	@ExceptionHandler({ PacienteInexistenteOuInativaException.class })
 	public ResponseEntity<Object> handlePessoaInexistenteOuInativaException(PacienteInexistenteOuInativaException ex) {
-		String mensagemUsuario = messageSource.getMessage("paciente.inexistente-ou-inativa", null, LocaleContextHolder.getLocale());
+		String mensagemUsuario = messageSource.getMessage("paciente.inexistente-ou-inativa", null,
+				LocaleContextHolder.getLocale());
 		String mensagemDesenvolvedor = ex.toString();
 		List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
 		return ResponseEntity.badRequest().body(erros);
 	}
-	
-	
+
 }
