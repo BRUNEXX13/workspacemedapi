@@ -6,4 +6,5 @@ import com.example.med.api.model.Paciente;
 
 public interface PacienteRepository extends JpaRepository<Paciente, Long>{
 
+	
 }
