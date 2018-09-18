@@ -80,11 +80,6 @@
 		</dependency>
 
 
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-jpamodelgen</artifactId>
-		</dependency>
-
 		<!--  Dependecia para Embedar Model Endereco em Paciente -->
 		<dependency>
 			<groupId>org.infinispan</groupId>

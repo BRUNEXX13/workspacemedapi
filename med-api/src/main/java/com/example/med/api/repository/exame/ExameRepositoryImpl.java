@@ -16,13 +16,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 
-import com.example.med.api.model.Especialidade;
 import com.example.med.api.model.Especialidade_;
 import com.example.med.api.model.Exame;
 import com.example.med.api.model.Exame_;
-import com.example.med.api.model.Paciente;
 import com.example.med.api.model.Paciente_;
-import com.example.med.api.model.TipoExame;
 import com.example.med.api.repository.filter.ExameFilter;
 import com.example.med.api.repository.projection.ResumoExame;
 

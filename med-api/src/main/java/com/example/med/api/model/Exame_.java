@@ -11,6 +11,7 @@ public abstract class Exame_ {
 
 	public static volatile SingularAttribute<Exame, Long> codigo;
 	public static volatile SingularAttribute<Exame, TipoExame> tipo;
+	public static volatile SingularAttribute<Exame, String> observacao;
 	public static volatile SingularAttribute<Exame, Especialidade> especialidade;
 	public static volatile SingularAttribute<Exame, LocalDate> dataExame;
 	public static volatile SingularAttribute<Exame, Paciente> paciente;

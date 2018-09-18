@@ -35,6 +35,10 @@ public class Exame {
 	@Enumerated(EnumType.STRING)
 	private TipoExame tipo;
 
+	@NotNull
+	@Column(name = "observacao")
+	private String observacao;
+
 	@ManyToOne
 	@NotNull
 	@JoinColumn(name = "codigo_especialidade")
@@ -77,6 +81,14 @@ public class Exame {
 		this.tipo = tipo;
 	}
 
+	public String getObservacao() {
+		return observacao;
+	}
+
+	public void setObservacao(String observacao) {
+		this.observacao = observacao;
+	}
+
 	public Especialidade getEspecialidade() {
 		return especialidade;
 	}
@@ -93,13 +105,14 @@ public class Exame {
 		this.paciente = paciente;
 	}
 
-	public Exame(long codigo, String nome, LocalDate dataExame, TipoExame tipo, Especialidade especialidade,
-			Paciente paciente) {
+	public Exame(long codigo, String nome, LocalDate dataExame, TipoExame tipo, String observacao,
+			Especialidade especialidade, Paciente paciente) {
 		super();
 		this.codigo = codigo;
 		this.nome = nome;
 		this.dataExame = dataExame;
 		this.tipo = tipo;
+		this.observacao = observacao;
 		this.especialidade = especialidade;
 		this.paciente = paciente;
 	}
