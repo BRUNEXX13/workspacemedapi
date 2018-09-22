@@ -4,7 +4,5 @@ CREATE TABLE especialidade (
 )ENGINE=INNODB DEFAULT CHARSET=utf8;
 
 Insert INTO  especialidade (nome) VALUES ('GINOCOLOGISTA');
-
 Insert INTO  especialidade (nome) VALUES ('DERMATOLOGISTA');
-
 Insert INTO  especialidade (nome) VALUES ('ESPECIALISTA');
