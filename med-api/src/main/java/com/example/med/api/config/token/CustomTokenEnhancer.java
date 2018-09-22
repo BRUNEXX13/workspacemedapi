@@ -11,7 +11,6 @@ import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import com.example.med.api.security.UsuarioSistema;
 
 
-
 public class CustomTokenEnhancer implements TokenEnhancer {
 
 	@Override

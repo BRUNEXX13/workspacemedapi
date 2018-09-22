@@ -1,6 +1,5 @@
 package com.example.med.api.config;
 
-
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,7 @@ import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+
 
 import com.example.med.api.config.token.CustomTokenEnhancer;
 
@@ -38,10 +38,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 				.accessTokenValiditySeconds(1800)
 				.refreshTokenValiditySeconds(3600 * 24)
 			.and()
-			//Configuracao de Escopo Cliente Mobile
 				.withClient("mobile")
 				.secret("m0b1l30")
-				.scopes("read", "write")
+				.scopes("read")
 				.authorizedGrantTypes("password", "refresh_token")
 				.accessTokenValiditySeconds(1800)
 				.refreshTokenValiditySeconds(3600 * 24);

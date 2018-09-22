@@ -3,7 +3,7 @@ package com.example.med.api.config.property;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-@ConfigurationProperties("medapi")
+@ConfigurationProperties("algamoney")
 @Component
 public class MedApiProperty {
 
