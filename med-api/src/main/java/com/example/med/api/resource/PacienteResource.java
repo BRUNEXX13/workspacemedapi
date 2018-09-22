@@ -1,12 +1,13 @@
 package com.example.med.api.resource;
 
-import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,7 +32,7 @@ import com.example.med.api.service.PacienteService;
 public class PacienteResource {
 
 	@Autowired
-	private PacienteRepository PacienteRepository;
+	private PacienteRepository pacienteRepository;
 
 	@Autowired
 	private PacienteService pacienteService;
@@ -40,11 +42,7 @@ public class PacienteResource {
 	private ApplicationEventPublisher publisher;
 
 	// Listando os valores do JSON
-	@GetMapping
-	public List<Paciente> listar() {
-		return PacienteRepository.findAll();
-
-	}
+	
 
 	// @Salvar uma Uma Especialidade no Banco De Dados - Status Code 201
 	// Created//
@@ -52,7 +50,7 @@ public class PacienteResource {
 	@PostMapping
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_PACIENTE') and #oauth2.hasScope('write')")
 	public ResponseEntity<Paciente> criar(@Valid @RequestBody Paciente paciente, HttpServletResponse response) {
-		Paciente pacienteSalvo = PacienteRepository.save(paciente);
+		Paciente pacienteSalvo = pacienteRepository.save(paciente);
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, pacienteSalvo.getCodigo()));
 		return ResponseEntity.status(HttpStatus.CREATED).body(pacienteSalvo);
 	}
@@ -60,7 +58,7 @@ public class PacienteResource {
 	@GetMapping("/{codigo}")
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_PACIENTE') and #oauth2.hasScope('read')")
 	public ResponseEntity<Paciente> buscarPeloCodigo(@PathVariable Long codigo) {
-		Paciente paciente = PacienteRepository.findOne(codigo);
+		Paciente paciente = pacienteRepository.findOne(codigo);
 		return paciente != null ? ResponseEntity.ok(paciente) : ResponseEntity.notFound().build();
 	}
 
@@ -68,7 +66,7 @@ public class PacienteResource {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PreAuthorize("hasAuthority('ROLE_REMOVER_PACIENTE') and #oauth2.hasScope('write')")
 	public void remover(@PathVariable Long codigo) {
-		PacienteRepository.delete(codigo);
+		pacienteRepository.delete(codigo);
 	}
 
 	@PutMapping("/{codigo}")
@@ -86,5 +84,14 @@ public class PacienteResource {
 		pacienteService.atualizarPropriedadeAtivo(codigo, ativo);
 
 	}
+	
+	@GetMapping
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_PACIENTE')")
+	public Page<Paciente> pesquisar(@RequestParam(required = false, defaultValue = "%") String nome, Pageable pageable) {
+		return pacienteRepository.findByNomeContaining(nome, pageable);
+}
+	
+	
+
 
 }
