@@ -1,4 +1,4 @@
-package com.example.med.api.resource;
+	package com.example.med.api.resource;
 
 import java.util.Arrays;
 import java.util.List;
@@ -90,15 +90,18 @@ public class ExameResource {
 		exameRepository.delete(codigo);
 	}
 
-	@PutMapping("/{codigo}")
-	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_EXAME') and #oauth2.hasScope('write')")
-	public ResponseEntity<Exame> atualizar(@PathVariable Long codigo, @Valid @RequestBody Exame exame) {
-		Exame exameSalvo = exameService.atualizar(codigo, exame);
-		return ResponseEntity.ok(exameSalvo);
-	}
+	/*
+	 * @PutMapping("/{codigo}")
+	 * 
+	 * @PreAuthorize("hasAuthority('ROLE_CADASTRAR_EXAME') and #oauth2.hasScope('write')"
+	 * ) public ResponseEntity<Exame> atualizar(@PathVariable Long
+	 * codigo, @Valid @RequestBody Exame exame) { Exame exameSalvo =
+	 * exameService.atualizar(codigo, exame); return
+	 * ResponseEntity.ok(exameSalvo); }
+	 */
 
-	// Passando uma Excecao Especifica // Naoo pode salvar um exame com
-	// papciente inativo
+	// Passando uma Excecao Especifica // Naoo pode salvar um exame com paciente inativo
+	//
 	@ExceptionHandler({ PacienteInexistenteOuInativaException.class })
 	public ResponseEntity<Object> handlePessoaInexistenteOuInativaException(PacienteInexistenteOuInativaException ex) {
 		String mensagemUsuario = messageSource.getMessage("paciente.inexistente-ou-inativa", null,
@@ -106,6 +109,17 @@ public class ExameResource {
 		String mensagemDesenvolvedor = ex.toString();
 		List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
 		return ResponseEntity.badRequest().body(erros);
+	}
+
+	@PutMapping("/{codigo}")
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_EXAME')")
+	public ResponseEntity<Exame> atualizar(@PathVariable Long codigo, @Valid @RequestBody Exame exame) {
+		try {
+			Exame exameSalvo = exameService.atualizar(codigo, exame);
+			return ResponseEntity.ok(exameSalvo);
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.notFound().build();
+		}
 	}
 
 }
