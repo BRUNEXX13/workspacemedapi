@@ -1,5 +1,6 @@
 package com.example.med.api.config;
 
+
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,26 +27,38 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
-
+	
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-		clients.inMemory().withClient("angular").secret("@ngul@r0").scopes("read", "write")
-				.authorizedGrantTypes("password", "refresh_token").accessTokenValiditySeconds(1800)
-				.refreshTokenValiditySeconds(3600 * 24).and()
-				// Escopo para Mobile Ler Escreve Deletar
-				.withClient("mobile").secret("m0b1l30").scopes("read").authorizedGrantTypes("password", "refresh_token")
-				.accessTokenValiditySeconds(1800).refreshTokenValiditySeconds(3600 * 24);
+		clients.inMemory()
+				.withClient("angular")
+				.secret("@ngul@r0")
+				.scopes("read", "write")
+				.authorizedGrantTypes("password", "refresh_token")
+				.accessTokenValiditySeconds(1800)
+				.refreshTokenValiditySeconds(3600 * 24)
+			.and()
+			//Configuracao de Escopo Cliente Mobile
+				.withClient("mobile")
+				.secret("m0b1l30")
+				.scopes("read", "write")
+				.authorizedGrantTypes("password", "refresh_token")
+				.accessTokenValiditySeconds(1800)
+				.refreshTokenValiditySeconds(3600 * 24);
 	}
-
+	
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 		TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
 		tokenEnhancerChain.setTokenEnhancers(Arrays.asList(tokenEnhancer(), accessTokenConverter()));
-
-		endpoints.tokenStore(tokenStore()).tokenEnhancer(tokenEnhancerChain).reuseRefreshTokens(false)
-				.authenticationManager(authenticationManager);
+		
+		endpoints
+			.tokenStore(tokenStore())
+			.tokenEnhancer(tokenEnhancerChain)
+			.reuseRefreshTokens(false)
+			.authenticationManager(authenticationManager);
 	}
-
+	
 	@Bean
 	public JwtAccessTokenConverter accessTokenConverter() {
 		JwtAccessTokenConverter accessTokenConverter = new JwtAccessTokenConverter();
@@ -57,10 +70,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	public TokenStore tokenStore() {
 		return new JwtTokenStore(accessTokenConverter());
 	}
-
+	
 	@Bean
 	public TokenEnhancer tokenEnhancer() {
-		return new CustomTokenEnhancer();
+	    return new CustomTokenEnhancer();
 	}
-
+	
 }
