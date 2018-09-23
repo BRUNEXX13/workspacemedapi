@@ -7,16 +7,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import com.example.med.api.event.RecursoCriadoEvent;
 
 //@ Se torna componente do Spring
 // Classe que chama Eventos 
 @Component
 public class RecursoCriadoListener implements ApplicationListener<RecursoCriadoEvent> {
-
-
-
 
 	@Override
 	public void onApplicationEvent(RecursoCriadoEvent recursoCriadoEvent) {
