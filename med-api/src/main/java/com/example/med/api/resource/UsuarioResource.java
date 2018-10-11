@@ -31,8 +31,8 @@ import com.example.med.api.service.UsuarioService;
 
 
 //Pegando de Repository 
-@RestController
-@RequestMapping("/usuarios")
+@RestController        // É Controlador @Rest - Vai ser Convertido para Json  
+@RequestMapping("/usuarios") // Mapeamento da Requisição 
 public class UsuarioResource {
 
 	@Autowired
