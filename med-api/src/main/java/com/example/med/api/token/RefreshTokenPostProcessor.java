@@ -20,6 +20,10 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 import com.example.med.api.config.property.MedApiProperty;
 
+/*
+*Defini os acessos para o token  e para requisicao
+*/
+
 @Profile("oauth-security")
 @ControllerAdvice
 public class RefreshTokenPostProcessor implements ResponseBodyAdvice<OAuth2AccessToken> {
@@ -52,7 +56,8 @@ public class RefreshTokenPostProcessor implements ResponseBodyAdvice<OAuth2Acces
 	private void removerRefreshTokenDoBody(DefaultOAuth2AccessToken token) {
 		token.setRefreshToken(null);
 	}
-
+ 
+	//Define duracao do token e outros parametros
 	private void adicionarRefreshTokenNoCookie(String refreshToken, HttpServletRequest req, HttpServletResponse resp) {
 		Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
 		refreshTokenCookie.setHttpOnly(true);
