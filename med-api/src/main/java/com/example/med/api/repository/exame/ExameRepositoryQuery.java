@@ -7,6 +7,7 @@ import com.example.med.api.model.Exame;
 import com.example.med.api.repository.filter.ExameFilter;
 import com.example.med.api.repository.projection.ResumoExame;
 
+//Interface dos Filtros que Queremos usar
 public interface ExameRepositoryQuery {
 
 	public Page<Exame> filtrar(ExameFilter exameFilter, Pageable pageable);
