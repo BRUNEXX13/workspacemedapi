@@ -18,6 +18,17 @@ import org.springframework.stereotype.Component;
 
 import com.example.med.api.config.property.MedApiProperty;
 
+
+/*
+ * 
+ * Cross-origin resource sharing (CORS)(ou compartilhamento de recursos de origem cruzada)
+ *  é uma especificação de uma tecnologia de navegadores que define meios para um servidor permitir 
+ *  que seus recursos sejam acessados por uma página web de um domínio diferente
+ *  
+ * Filtro para Habilitar o Cross Origin  com o Spring Boot e Auth e poder fazer a requisicao
+ * 
+ */
+
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class CorsFilter implements Filter {
