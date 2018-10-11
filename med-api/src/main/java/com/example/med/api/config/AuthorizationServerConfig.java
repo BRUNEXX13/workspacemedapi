@@ -20,6 +20,10 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 import com.example.med.api.config.token.CustomTokenEnhancer;
 
+
+//Classe que possui as configurações para ser a seguranca oauth do spring//
+// O profile determina se esta Ativa ou Não 
+
 @Profile("oauth-security")
 @Configuration
 @EnableAuthorizationServer
