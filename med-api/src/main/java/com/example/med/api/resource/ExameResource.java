@@ -35,6 +35,12 @@ import com.example.med.api.repository.projection.ResumoExame;
 import com.example.med.api.service.ExameService;
 import com.example.med.api.service.exception.PacienteInexistenteOuInativaException;
 
+/*
+ *  Rest e trabalhado Atraves de Recursos ( PUT < POST < DELETE )
+ *  Essa classe vai expor tudo que esta relacionado com as anotações abaixo:/
+ */
+
+
 @RestController
 @RequestMapping("/exames")
 public class ExameResource {
