@@ -33,8 +33,8 @@ import com.example.med.api.service.PacienteService;
  */
 
 
-@RestController
-@RequestMapping("/pacientes")
+@RestController  //É Controlador @Rest - Vai ser Convertido para Json
+@RequestMapping("/pacientes") //// Mapeamento da Requisição 
 public class PacienteResource {
 
 	@Autowired
