@@ -24,6 +24,12 @@ import com.example.med.api.model.Usuario;
 import com.example.med.api.repository.UsuarioRepository;
 import com.example.med.api.service.UsuarioService;
 
+/*
+ *  Rest e trabalhado Atraves de Recursos ( PUT < POST < DELETE )
+ *  Essa classe vai expor tudo que esta relacionado com as anotações abaixo:/
+ */
+
+
 //Pegando de Repository 
 @RestController
 @RequestMapping("/usuarios")
