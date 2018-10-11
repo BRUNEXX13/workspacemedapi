@@ -10,7 +10,7 @@ import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 
 import com.example.med.api.security.UsuarioSistema;
 
-
+//Mostrar Usuario Logado na API
 public class CustomTokenEnhancer implements TokenEnhancer {
 
 	@Override
