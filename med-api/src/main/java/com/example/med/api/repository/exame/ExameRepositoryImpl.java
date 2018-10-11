@@ -23,6 +23,13 @@ import com.example.med.api.model.Paciente_;
 import com.example.med.api.repository.filter.ExameFilter;
 import com.example.med.api.repository.projection.ResumoExame;
 
+
+// Originalmente Definimos o que queremos buscar em nossa Classe -> ExameFilter
+
+/* Para Implementar Buscas Especificas em nosso sistema Usamos
+ Criteria uma Implementacao do JPA.
+ */
+
 public class ExameRepositoryImpl implements ExameRepositoryQuery {
 
 	@PersistenceContext
