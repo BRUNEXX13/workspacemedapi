@@ -18,6 +18,12 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.expression.OAuth2MethodSecurityExpressionHandler;
 
+//Classe que possui as configurações de segurança//
+// O profile determina se  estamos usamos a Seguranca Oauth do Spring  ou Basic Authentication//
+// Mais abaixo especifíco que apenas categorias podem ser lidos da  api 
+//via json sem necessidade de token.
+
+
 @Profile("oauth-security")
 @Configuration
 @EnableWebSecurity
