@@ -41,8 +41,8 @@ import com.example.med.api.service.exception.PacienteInexistenteOuInativaExcepti
  */
 
 
-@RestController
-@RequestMapping("/exames")
+@RestController   // É Controlador @Rest - Vai ser Convertido para Json
+@RequestMapping("/exames")  // Mapeamento da Requisição 
 public class ExameResource {
 
 	@Autowired
