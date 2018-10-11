@@ -24,7 +24,10 @@ import com.example.med.api.model.Medico;
 import com.example.med.api.repository.MedicoRepository;
 import com.example.med.api.service.MedicoService;
 
-//Pegando de Repository 
+/*
+ *  Rest e trabalhado Atraves de Recursos ( PUT < POST < DELETE )
+ *  Essa classe vai expor tudo que esta relacionado com as anotações abaixo:/
+ */
 
 @RestController
 @RequestMapping("/medicos")
