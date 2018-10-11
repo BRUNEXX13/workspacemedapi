@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 // Classe Pesquisar por filtros de Exames
-// Parametros que desejo passara para realizar as buscas
+// Parametros que desejo passar para realizar as buscas
 
 public class ExameFilter {
 
