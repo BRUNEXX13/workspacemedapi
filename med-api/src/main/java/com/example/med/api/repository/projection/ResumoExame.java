@@ -4,7 +4,9 @@ import java.time.LocalDate;
 
 import com.example.med.api.model.TipoExame;
 
-//Classe De projecoes// Retorna apenas o que eu quero no resumo
+
+//Classe De projecoes//
+//Retorna apenas o que eu quero no resumo  do Paciente , seria um List mas apenas com o retorno que desejo
 public class ResumoExame {
 
 	private Long codigo;
