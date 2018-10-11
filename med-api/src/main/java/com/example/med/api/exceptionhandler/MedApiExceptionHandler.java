@@ -23,7 +23,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-
+/* Classe que passamos ao usuário/desenvolvedor se as requisicoes foram feitas corretamente
+ * ou recebemos algum erro
+ */
 
 
 @ControllerAdvice
