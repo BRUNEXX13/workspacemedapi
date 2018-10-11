@@ -20,6 +20,12 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+/*
+* Classe que Implementa o Token junto do Cookie da Requisicao
+*
+*/
+
+
 @Profile("oauth-security")
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
